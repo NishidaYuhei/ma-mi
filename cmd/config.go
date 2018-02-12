@@ -17,7 +17,6 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"os/user"
 
 	"github.com/bellocha/ma-mi/lib"
 	"github.com/spf13/cobra"
@@ -37,19 +36,15 @@ to quickly create a Cobra application.`,
 		var filePath string
 		fmt.Println("Please enter the file path to save")
 		fmt.Scanf("%v", &filePath)
-		usr, err := user.Current()
-		if err != nil {
-			fmt.Println(err)
-		}
-		_, statDirErr := os.Stat(usr.HomeDir + "/.ma-mi")
+		_, statDirErr := os.Stat(lib.GetHomePath() + "/.ma-mi")
 		if statDirErr != nil {
-			lib.Mkdir(usr.HomeDir + "/.ma-mi")
+			lib.Mkdir(lib.GetHomePath() + "/.ma-mi")
 		}
-		_, statFileErr := os.Stat(usr.HomeDir + "/.ma-mi/config")
+		_, statFileErr := os.Stat(lib.GetHomePath() + "/.ma-mi/config")
 		if statFileErr == nil {
-			lib.RemoveFile(usr.HomeDir + "/.ma-mi/config")
+			lib.RemoveFile(lib.GetHomePath() + "/.ma-mi/config")
 		}
-		lib.CreateNewFile(usr.HomeDir+"/.ma-mi/config", filePath)
+		lib.CreateNewFile(lib.GetHomePath()+"/.ma-mi/config", filePath)
 	},
 }
 
