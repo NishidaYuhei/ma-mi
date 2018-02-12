@@ -34,6 +34,9 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		var filePath string
+		fmt.Println("Please enter the file path to save")
+		fmt.Scanf("%v", &filePath)
 		usr, err := user.Current()
 		if err != nil {
 			fmt.Println(err)
@@ -46,7 +49,7 @@ to quickly create a Cobra application.`,
 		if statFileErr == nil {
 			lib.RemoveFile(usr.HomeDir + "/.ma-mi/config")
 		}
-		lib.CreateNewFile(usr.HomeDir+"/.ma-mi/config", args[0])
+		lib.CreateNewFile(usr.HomeDir+"/.ma-mi/config", filePath)
 	},
 }
 
