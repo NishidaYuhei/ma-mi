@@ -16,23 +16,20 @@ package cmd
 
 import (
 	"fmt"
-	"os/exec"
+	"log"
+	"strings"
 
 	"github.com/bellocha/ma-mi/lib"
 	"github.com/spf13/cobra"
 )
 
 var (
-	HomePath      = lib.GetHomePath()
-	ConfigPath    = HomePath + "/.ma-mi/config"
-	ConfigSetPath = lib.ReadFile(ConfigPath)
-	MamiDirPath   = lib.MkdirAll(ConfigSetPath + "/make_minutes/" + lib.GetNowYearAndMonth())
-	TempDirPath   = lib.MkdirAll(ConfigSetPath + "/make_minutes/temp")
+	SetEditorConfPath = strings.TrimSuffix(ConfigPath, "config") + "/set_editor_conf"
 )
 
-// makeCmd represents the make command
-var makeCmd = &cobra.Command{
-	Use:   "make",
+// setEditorCmd represents the setEditor command
+var setEditorCmd = &cobra.Command{
+	Use:   "set-editor",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
@@ -41,33 +38,28 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		lib.CreateNewFile(TempDirPath+"/default.md", "")
-		cmd := exec.Command(lib.ReadFile(SetEditorConfPath), MamiDirPath+"/"+args[0]+".md")
-		switch len(args) {
-		case 1:
-			lib.CreateNewFile(MamiDirPath+"/"+args[0]+".md", lib.ReadFile(TempDirPath+"/"+"default.md"))
-			fmt.Println(lib.ReadFile(SetEditorConfPath) + " " + MamiDirPath + "/" + args[0] + ".md")
-			cmd.Run()
-			break
-		case 2:
-			lib.CreateNewFile(MamiDirPath+"/"+args[0]+".md", lib.ReadFile(TempDirPath+"/"+args[1]+".md"))
-			fmt.Println(lib.ReadFile(SetEditorConfPath), MamiDirPath+"/"+args[0]+".md")
-			cmd.Run()
-			break
-		}
+		var editorPath string
+		fmt.Println("Please default editor path.")
+		fmt.Println("If you do not know the editor path...")
+		fmt.Println("try: [which editor_command]")
+		fmt.Println("example: which code")
+		fmt.Scanf("%v", &editorPath)
+		lib.RemoveFile(SetEditorConfPath)
+		lib.CreateNewFile(SetEditorConfPath, editorPath)
+		log.Printf("register editor %v", editorPath)
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(makeCmd)
+	rootCmd.AddCommand(setEditorCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// makeCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// setEditorCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// makeCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// setEditorCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

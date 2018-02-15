@@ -8,36 +8,41 @@ import (
 	"os/user"
 )
 
-func CreateNewFile(filePath, writeStr string) {
-	file, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE, 0666)
-	if err != nil {
-		fmt.Println(err)
+func CreateNewFile(filePath, writeStr string) string {
+	if !Exists(filePath) {
+		file, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE, 0666)
+		if err != nil {
+			log.Println(err)
+		}
+		defer file.Close()
+		fmt.Fprint(file, writeStr)
+		log.Printf("Create new file %v\n", filePath)
 	}
-	defer file.Close()
-	fmt.Fprint(file, writeStr)
-	fmt.Printf("config write %v\n", writeStr)
-
+	return filePath
 }
 
 func RemoveFile(filePath string) {
 	if err := os.Remove(filePath); err != nil {
 		fmt.Println(err)
 	}
-	fmt.Printf("%v remove success\n", filePath)
+	log.Printf("Remove success %v\n", filePath)
 }
 
 func Mkdir(filePath string) {
 	if err := os.Mkdir(filePath, 0777); err != nil {
 		fmt.Println(err)
 	}
-	fmt.Printf("%v create success\n", filePath)
+	log.Printf("Create new Dir %v\n", filePath)
 }
 
-func MkdirAll(filePath string) {
-	if err := os.MkdirAll(filePath, 0777); err != nil {
-		log.Println(err)
+func MkdirAll(filePath string) string {
+	if !Exists(filePath) {
+		if err := os.MkdirAll(filePath, 0777); err != nil {
+			log.Println(err)
+		}
+		log.Printf("Create new Dir %v\n", filePath)
 	}
-	log.Printf("%v create success\n", filePath)
+	return filePath
 }
 
 func GetHomePath() string {
@@ -56,6 +61,7 @@ func ReadFile(filePath string) string {
 	return string(data)
 }
 
-func MakeDateDir() {
-	MkdirAll(ReadFile(GetHomePath()+"/.ma-mi/config") + "/make_minutes/" + GetNowYearAndMonth())
+func Exists(fileName string) bool {
+	_, err := os.Stat(fileName)
+	return err == nil
 }
