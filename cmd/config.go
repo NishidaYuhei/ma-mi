@@ -17,6 +17,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/bellocha/ma-mi/lib"
 	"github.com/spf13/cobra"
@@ -37,6 +38,8 @@ to quickly create a Cobra application.`,
 		fmt.Println("Please enter the file path to save")
 		fmt.Scanf("%v", &filePath)
 		_, statDirErr := os.Stat(lib.GetHomePath() + "/.ma-mi")
+		filePath = strings.Replace(filePath, "~", lib.GetHomePath(), 1)
+		filePath = strings.TrimSuffix(filePath, "/")
 		if statDirErr != nil {
 			lib.Mkdir(lib.GetHomePath() + "/.ma-mi")
 		}

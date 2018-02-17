@@ -65,3 +65,11 @@ func Exists(fileName string) bool {
 	_, err := os.Stat(fileName)
 	return err == nil
 }
+
+func Getwd() string {
+	wd, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return wd
+}

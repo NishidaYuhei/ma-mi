@@ -17,6 +17,7 @@ package cmd
 import (
 	"fmt"
 	"os/exec"
+	"strings"
 
 	"github.com/bellocha/ma-mi/lib"
 	"github.com/spf13/cobra"
@@ -26,8 +27,8 @@ var (
 	HomePath      = lib.GetHomePath()
 	ConfigPath    = HomePath + "/.ma-mi/config"
 	ConfigSetPath = lib.ReadFile(ConfigPath)
-	MamiDirPath   = lib.MkdirAll(ConfigSetPath + "/make_minutes/" + lib.GetNowYearAndMonth())
-	TempDirPath   = lib.MkdirAll(ConfigSetPath + "/make_minutes/temp")
+	MamiDirPath   = ConfigSetPath + "/" + lib.GetNowYearAndMonth()
+	TempDirPath   = strings.TrimSuffix(ConfigPath, "config") + "temp"
 )
 
 // makeCmd represents the make command
@@ -41,18 +42,20 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		lib.MkdirAll(MamiDirPath)
+		lib.MkdirAll(TempDirPath)
 		lib.CreateNewFile(TempDirPath+"/default.md", "")
-		cmd := exec.Command(lib.ReadFile(SetEditorConfPath), MamiDirPath+"/"+args[0]+".md")
+		editorCmd := exec.Command(lib.ReadFile(SetEditorConfPath), MamiDirPath+"/"+args[0]+".md")
 		switch len(args) {
 		case 1:
-			lib.CreateNewFile(MamiDirPath+"/"+args[0]+".md", lib.ReadFile(TempDirPath+"/"+"default.md"))
+			lib.CreateNewFile(MamiDirPath+"/"+args[0]+".md", lib.ReadFile(TempDirPath+"/default.md"))
 			fmt.Println(lib.ReadFile(SetEditorConfPath) + " " + MamiDirPath + "/" + args[0] + ".md")
-			cmd.Run()
+			editorCmd.Run()
 			break
 		case 2:
 			lib.CreateNewFile(MamiDirPath+"/"+args[0]+".md", lib.ReadFile(TempDirPath+"/"+args[1]+".md"))
 			fmt.Println(lib.ReadFile(SetEditorConfPath), MamiDirPath+"/"+args[0]+".md")
-			cmd.Run()
+			editorCmd.Run()
 			break
 		}
 	},
