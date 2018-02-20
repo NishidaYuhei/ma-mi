@@ -24,13 +24,8 @@ import (
 // setCmd represents the set command
 var setCmd = &cobra.Command{
 	Use:   "set",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "set template file alias",
+	Long:  `set template file alias`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if strings.Contains(args[0], "/") {
 			if strings.HasPrefix(args[0], ".") {

@@ -14,7 +14,7 @@
 
 package main
 
-import "github.com/bellocha/ma-mi/cmd"
+import "github.com/NishidaYuuhei/ma-mi/cmd"
 
 func main() {
 	cmd.Execute()
