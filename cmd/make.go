@@ -25,7 +25,7 @@ import (
 
 var (
 	HomePath      = lib.GetHomePath()
-	ConfigPath    = HomePath + "/.ma-mi/config"
+	ConfigPath    = HomePath + "/.mami/config"
 	ConfigSetPath = lib.ReadFile(ConfigPath)
 	MamiDirPath   = ConfigSetPath + "/" + lib.GetNowYearAndMonth()
 	TempDirPath   = strings.TrimSuffix(ConfigPath, "config") + "temp"

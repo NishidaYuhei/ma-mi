@@ -32,17 +32,17 @@ var configCmd = &cobra.Command{
 		var filePath string
 		fmt.Println("Please enter the file path to save")
 		fmt.Scanf("%v", &filePath)
-		_, statDirErr := os.Stat(lib.GetHomePath() + "/.ma-mi")
+		_, statDirErr := os.Stat(lib.GetHomePath() + "/.mami")
 		filePath = strings.Replace(filePath, "~", lib.GetHomePath(), 1)
 		filePath = strings.TrimSuffix(filePath, "/")
 		if statDirErr != nil {
-			lib.Mkdir(lib.GetHomePath() + "/.ma-mi")
+			lib.Mkdir(lib.GetHomePath() + "/.mami")
 		}
-		_, statFileErr := os.Stat(lib.GetHomePath() + "/.ma-mi/config")
+		_, statFileErr := os.Stat(lib.GetHomePath() + "/.mami/config")
 		if statFileErr == nil {
-			lib.RemoveFile(lib.GetHomePath() + "/.ma-mi/config")
+			lib.RemoveFile(lib.GetHomePath() + "/.mami/config")
 		}
-		lib.CreateNewFile(lib.GetHomePath()+"/.ma-mi/config", filePath)
+		lib.CreateNewFile(lib.GetHomePath()+"/.mami/config", filePath)
 	},
 }
 

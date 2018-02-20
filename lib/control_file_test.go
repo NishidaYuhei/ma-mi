@@ -8,7 +8,7 @@ import (
 )
 
 func TestReadFile(t *testing.T) {
-	assert.Equal(t, "/Users/bellocha/Documents/test", ReadFile(GetHomePath()+"/.ma-mi/config"))
+	assert.Equal(t, "/Users/bellocha/Documents/test", ReadFile(GetHomePath()+"/.mami/config"))
 }
 
 func TestExists(t *testing.T) {
