@@ -17,7 +17,7 @@ package cmd
 import (
 	"strings"
 
-	"github.com/bellocha/ma-mi/lib"
+	"github.com/NishidaYuuhei/mami/lib"
 	"github.com/spf13/cobra"
 )
 
